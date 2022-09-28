@@ -1,4 +1,7 @@
 {
   "name": "ddev-yarn-issue-4215",
-  "packageManager": "yarn@3.2.3"
+  "packageManager": "yarn@3.2.3",
+  "dependencies": {
+    "tailwindcss": "^3.1.8"
+  }
 }
