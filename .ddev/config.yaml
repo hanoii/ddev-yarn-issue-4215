@@ -17,6 +17,9 @@ use_dns_when_possible: true
 composer_version: "2"
 web_environment: []
 nodejs_version: "16"
+web_environment:
+  - npm_config_cache=/mnt/ddev-global-cache/npm
+  - YARN_GLOBAL_FOLDER=/home/${USER}/.yarn
 
 # Key features of ddev's config.yaml:
 

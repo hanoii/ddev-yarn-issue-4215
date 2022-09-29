@@ -78,10 +78,14 @@ ls /var/www/html >/dev/null || (echo "/var/www/html does not seem to be healthy/
 # Make sure the TERMINUS_CACHE_DIR (/mnt/ddev-global-cache/terminus/cache) exists
 sudo mkdir -p ${TERMINUS_CACHE_DIR}
 
-sudo mkdir -p /mnt/ddev-global-cache/{bashhistory/${HOSTNAME},mysqlhistory/${HOSTNAME},nvm_dir/${HOSTNAME},npm/${HOSTNAME},yarn/${HOSTNAME}}
+sudo mkdir -p /mnt/ddev-global-cache/{bashhistory/${HOSTNAME},mysqlhistory/${HOSTNAME},nvm_dir/${HOSTNAME},npm,yarn}
 sudo chown -R "$(id -u):$(id -g)" /mnt/ddev-global-cache/ /var/lib/php
-yarn config set cache-folder /mnt/ddev-global-cache/yarn/${HOSTNAME} -H || yarn config set cacheFolder /mnt/ddev-global-cache/yarn/${HOSTNAME} -H || true
-npm config set cache /mnt/ddev-global-cache/npm/${HOSTNAME} || true
+# The following ensures a persistent "global" cache for both yarn1 (classic)
+# and yarn2 (berry). In the case of yarn2, the global cache will only be used
+# if the project is configured to use it
+(cd && yarn config set cache-folder /mnt/ddev-global-cache/yarn || true)
+mkdir -p ${YARN_GLOBAL_FOLDER}
+ln -sf /mnt/ddev-global-cache/yarn ${YARN_GLOBAL_FOLDER}/cache
 
 ln -sf /mnt/ddev-global-cache/nvm_dir/${HOSTNAME} ${NVM_DIR:-${HOME}/.nvm}
 if [ ! -f ${NVM_DIR:-${HOME}/.nvm}/nvm.sh ]; then (install_nvm.sh || true); fi
