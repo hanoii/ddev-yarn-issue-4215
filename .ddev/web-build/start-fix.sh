@@ -83,9 +83,11 @@ sudo chown -R "$(id -u):$(id -g)" /mnt/ddev-global-cache/ /var/lib/php
 # The following ensures a persistent "global" cache for both yarn1 (classic)
 # and yarn2 (berry). In the case of yarn2, the global cache will only be used
 # if the project is configured to use it
+YARN_GLOBAL_FOLDER=${HOME}/.yarn
 (cd && yarn config set cache-folder /mnt/ddev-global-cache/yarn || true)
 mkdir -p ${YARN_GLOBAL_FOLDER}
 ln -sf /mnt/ddev-global-cache/yarn ${YARN_GLOBAL_FOLDER}/cache
+sudo sh -c "printf \"export YARN_GLOBAL_FOLDER=${YARN_GLOBAL_FOLDER}\" > /etc/bashrc/yarn.bashrc"
 
 ln -sf /mnt/ddev-global-cache/nvm_dir/${HOSTNAME} ${NVM_DIR:-${HOME}/.nvm}
 if [ ! -f ${NVM_DIR:-${HOME}/.nvm}/nvm.sh ]; then (install_nvm.sh || true); fi
@@ -113,5 +115,7 @@ echo 'Server started'
 
 # We don't want the various daemons to know about PHP_IDE_CONFIG
 unset PHP_IDE_CONFIG
+
+export TEST_VAR="hola"
 
 exec /usr/bin/supervisord -n -c "/etc/supervisor/supervisord-${DDEV_WEBSERVER_TYPE}.conf"
