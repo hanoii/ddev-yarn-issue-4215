@@ -84,11 +84,9 @@ sudo chown -R "$(id -u):$(id -g)" /mnt/ddev-global-cache/ /var/lib/php
 # yarn1 (classic) and yarn2 (berry). In the case of yarn2, the global cache
 # will only be used if the project is configured to use it through it's won
 # enableGlobalCache configuration option.
-YARN_GLOBAL_FOLDER=${HOME}/.yarn
 (cd && yarn config set cache-folder /mnt/ddev-global-cache/yarn || true)
-mkdir -p ${YARN_GLOBAL_FOLDER}
-ln -sf /mnt/ddev-global-cache/yarn ${YARN_GLOBAL_FOLDER}/cache
-sudo sh -c "printf \"export YARN_GLOBAL_FOLDER=${YARN_GLOBAL_FOLDER}\" > /etc/bashrc/yarn.bashrc"
+mkdir -p ~/.yarn/berry
+ln -sf /mnt/ddev-global-cache/yarn ~/.yarn/berry/cache
 
 ln -sf /mnt/ddev-global-cache/nvm_dir/${HOSTNAME} ${NVM_DIR:-${HOME}/.nvm}
 if [ ! -f ${NVM_DIR:-${HOME}/.nvm}/nvm.sh ]; then (install_nvm.sh || true); fi
