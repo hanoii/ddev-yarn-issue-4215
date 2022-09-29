@@ -80,9 +80,10 @@ sudo mkdir -p ${TERMINUS_CACHE_DIR}
 
 sudo mkdir -p /mnt/ddev-global-cache/{bashhistory/${HOSTNAME},mysqlhistory/${HOSTNAME},nvm_dir/${HOSTNAME},npm,yarn}
 sudo chown -R "$(id -u):$(id -g)" /mnt/ddev-global-cache/ /var/lib/php
-# The following ensures a persistent "global" cache for both yarn1 (classic)
-# and yarn2 (berry). In the case of yarn2, the global cache will only be used
-# if the project is configured to use it
+# The following ensures a persistent and shared "global" cache for both
+# yarn1 (classic) and yarn2 (berry). In the case of yarn2, the global cache
+# will only be used if the project is configured to use it through it's won
+# enableGlobalCache configuration option.
 YARN_GLOBAL_FOLDER=${HOME}/.yarn
 (cd && yarn config set cache-folder /mnt/ddev-global-cache/yarn || true)
 mkdir -p ${YARN_GLOBAL_FOLDER}
